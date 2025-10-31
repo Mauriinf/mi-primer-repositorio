@@ -1,100 +1,100 @@
- public class AppPilaEstatica {
-static Scanner teclado = new Scanner(System.in);
-static final int MAX = 5;
-static Object Pila[] = new Object[MAX];
-static int tope = -1;
+import java.util.Scanner;
+public class Stack {
+  private int[] arr;
+  private int top;
 
+  // Constructor to initialize the stack
+  public Stack(int size) {
+    arr = new int[size];
+    top = -1;
+  }
 
-public static void main(String[] args) {
-     Object Dato;
-     int opc;
+  // Method to push an element onto the stack
+  public void push(int num) {
+    if (top == arr.length - 1) {
+      System.out.println("Stack is full");
+    } else {
+      top++;
+      arr[top] = num;
+    }
+  }
 
-    do{
-      System.out.println("Menu de pila");
-      System.out.println("1. Push");
-      System.out.println("2. Pop");
-      System.out.println("3. Desplegar Pila");
-      System.out.println("4. Salir");
-      System.out.println("Teclee la opcion");
-      opc = teclado.nextInt();
+  // Method to pop an element from the stack
+  public int pop() {
+    if (top == -1) {
+      System.out.println("Stack Underflow");
+      return -1;
+    } else {
+      int poppedElement = arr[top];
+      top--;
+      return poppedElement;
+    }
+  }
 
-      switch(opc){
-          case 1: 
+  // Method to get the top element of the stack
+  public int peek() {
+    if (top == -1) {
+      System.out.println("Stack is empty");
+      return -1;
+    } else {
+      return arr[top];
+    }
+  }
 
-            System.out.println("Ingrese dato a insertar");
-            Dato = teclado.nextInt();
+  // Method to check if the stack is empty
+  public boolean isEmpty() {
+    return top == -1;
+  }
 
-            push(Pila, Dato, tope, MAX);
+  public void sort() {
+    if (top == -1) {
+      System.out.println("Stack is empty");
+      return;
+    }
 
+    Stack tempStack = new Stack(arr.length);
 
-              break;
-          case 2: 
+    while (!isEmpty()) {
+      int temp = pop();
 
-              Dato = pop(Pila, tope);
-              if (Dato == null) {
-                  System.out.println("El dato que salio es: " + Dato);
-
-              }
-
-              break;
-          case 3:
-
-              desplegarPila(Pila, tope);
-
-              break;
-          case 4:
-              System.out.println("Adios");
-          default:
-              System.out.println("Error\nOpcion invalida");
+      while (!tempStack.isEmpty() && tempStack.peek() < temp) {
+        push(tempStack.pop());
       }
 
-    }while(opc!=4);
-
-
-
-}
-
-public static boolean pilaVacia(Object Pila[],int tope){
-    return tope == -1;
-
-}
-
-public static boolean pilaLlena(Object Pila[], int tope, int MAX){
-    return tope == MAX-1;
-
-}
-public static void push(Object Pila[],Object Dato,int tope,int MAX){
-    if (pilaLlena(Pila, tope, MAX)==true) {
-        System.out.println("Overflow");
-    } else {
-        tope ++;
-        Pila[tope] = Dato;
-        System.out.println(tope);
-
+      tempStack.push(temp);
     }
 
-}
-public static Object pop(Object Pila[],int tope){
-    Object Dato = null;
-    if (pilaLlena(Pila, tope, MAX) == true) {
-        System.out.println("Underflow"); 
-    } else {
-        Dato = Pila[tope];
-        tope --;
+    while (!tempStack.isEmpty()) {
+      int temp = tempStack.pop();
+      push(temp);
     }
-    return Dato;
-}
-public static void desplegarPila(Object Pila[],int tope){
+  }
 
-    if (pilaVacia(Pila, tope) == true) {
-        System.out.println("-------Pila Vacia--------");
+  public void display() {
+    if (top == -1) {
+      System.out.println("Stack is empty");
     } else {
-        System.out.println("Datos de la pila");
-            for (int i = -1; i < tope; i++) {
-                System.out.println(Pila[i]);
-            }
-            System.out.println("---------------------");
+      System.out.print("Stack elements: ");
+      for (int i = top; i >= 0; i--) {
+        System.out.print(arr[i] + " ");
+      }
+      System.out.println();
     }
+  }
 
-
+  public static void main(String[] args) {
+    System.out.println("Initialize a stack:");
+    Stack stack = new Stack(6);
+    System.out.println("\nInput some elements on the stack:");
+    stack.push(1);
+    stack.push(3);
+    stack.push(2);
+    stack.push(0);
+    stack.push(7);
+    stack.push(5);
+    stack.display();
+    System.out.println("\nSort the elements of the stack in descending order:");
+    stack.sort();
+    stack.display();
+  }
 }
